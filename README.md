@@ -1,2 +1,2 @@
-# Pasword_List_Gen
+# Password_List_Gen
 input information and this will create a wordlist
