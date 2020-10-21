@@ -1,8 +1,12 @@
 #This was written by Boyd Kirkman for educational and professional use only, I take no responsibility for its miss use.
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~Imports~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Imports~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 from itertools import permutations, combinations
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Title~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+title = """
+
+"""
 
 #~~~~~~~~~~~~~~~~~~~~~~~~defining lists and vaiables~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 words = ["password"]
@@ -29,14 +33,29 @@ def simple(in_numbers,in_words):
 
 def caps():
     #mix the capital letters throughout
+    pass
 
 def numsub():
     #replace letters with their common number replacements
+    pass
+
+def allcomb(numbers,simple,caps,numsub):
+    #combine all lists created up till now
+    pass
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~the main function~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def main():
+    print(title)
+    wordsadd = input("Known information: ")
+    words.append(wordsadd)
+    #memoisation of numbers calculations
+    mem_numbers = numbers()
     numbers.append(numbers())
-    savelist.append((simple(numbers),caps(),numsub()))
+    #memoisation of the other calculations
+    mem_simp = simple(numbers,words)
+    mem_caps = caps()
+    mem_numsub = numsub()
+    savelist.append((mem_simp,mem_caps,mem_numsub,allcomb(mem_numbers,mem_simple,mem_caps,mem_numsub)))
     with open("pass.txt","w+") as file:
         for line in savelist:
             file.write(savelist[line])
