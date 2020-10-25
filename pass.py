@@ -1,7 +1,8 @@
 #This was written by Boyd Kirkman for educational and professional use only, I take no responsibility for its miss use.
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Imports~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-from itertools import permutations, combinations
+from itertools import permutations, combinations, product
+from more_itertools import collapse
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Title~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 title = """
@@ -36,46 +37,59 @@ title = """
 
 PASSWORD CRACKER v1.0.0
 WARNING: This will likely create a very large list.
-I take no responsibility for any potentially illegal activity aided by use of this software.
+DISCLAIMER: I take no responsibility for any potentially illegal activity aided by use of this software.
 """
 
 #~~~~~~~~~~~~~~~~~~~~~~~~defining lists and vaiables~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 words = ["password"]
-numbers = []
+numberlist = []
 savelist = []
 
 #~~~~~~~~~~~~~~~~~~~functions that generate the variants~~~~~~~~~~~~~~~~~~~~~~~~
 def numbers():
     #this will create multiple number combinations
     num = []
-    for f in range(1,10):
-        num.append(["".join(list(str(p))) for p in combinations([0,1,2,3,4,5,6,7,8,9],f)])
-    num.append(["".join(list(str(p))) for p in combinations([0,1,2,3,4,5,6,7,8,9])])
+    for f in range(1,11):
+        for p in combinations([0,1,2,3,4,5,6,7,8,9],f):
+            num.append("".join(["".join(str(q)) for q in p]))
     return num
 
-def mixer(in_numbers,in_words):
+def mixer(in_words):
     #do just the usual mixing and mashing of the words, words with numbers, etc, these can then be transmuted via the others
     listw = []
     listc = []
     listw.append(in_words)
     for f in range(1,(len(in_words)+1)):
+        print("mixing words:",f,"/",len(in_words))
         listw.append(["".join(p) for p in permutations(in_words,f)])
-    listc.append(listw.append())
+    listc.append(listw)
+    return list(collapse(listc))
 
 def caps(in_words):
     #mix the capital letters throughout
     caps = []
     for f in range(0,len(in_words)):
-        caps.append(''.join, itertools.product(*((c.upper(), c.lower()) for c in in_words[f]))
-    return caps
+        print("mixing in caps:",f,"/",len(in_words))
+        caps.append(list(map(''.join, product(*zip(in_words[f].upper(), in_words[f].lower())))))
+    return list(collapse(caps))
 
 def numsub(in_words):
-    #replace letters with their common number replacements
-    pass
+    #replace letters with their common number replacements -------> I think I'll leave this out for now else the word list will get way to long
+    return 0
 
-def allcomb(numbers,mixer,caps,numsub):
+def allcomb(in_numbers,in_words,numsub):
     #combine all lists created up till now
-    pass
+    comb = []
+    comb.append(in_words)
+    for i in range(0,len(in_words)):
+        for f in range(0,len(in_numbers)):
+            print(in_words[i])
+            print(in_numbers[f])
+            comb.append(in_words[i]+in_numbers[f])
+            comb.append(in_numbers[f]+in_words[i])
+    comb.append(in_numbers)
+    print(f"wow thats a long file: {len(comb)} guesses in total")
+    return comb
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~the main function~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def main():
@@ -84,18 +98,20 @@ def main():
     collecting = True
     while collecting:
         wordsadd = input(">>> ")
-        if wordsadd.lower() == 'in_done'
+        if wordsadd.lower() == 'in_done':
             collecting = False
         else:
             words.append(wordsadd.lower())
     #memoisation of numbers calculations
     mem_numbers = numbers()
-    numbers.append(numbers())
+    numberlist.append(numbers())
     #memoisation of the other calculations
-    mem_mixer = mixer(numbers,words) #STEP 1: Create a list of all possible permutations of the words
-    mem_caps = caps(mem_mixer) #STEP 2: Take that list of mixes and find all upper/lower case combos
+    mem_mixer = mixer(words) #STEP 1: Create a list of all possible permutations of the words
+
+    #currently out of the program  due to memory errors:
+    mem_caps = 0#caps(mem_mixer) #STEP 2: Take that list of mixes and find all upper/lower case combos
     mem_numsub = numsub(mem_caps) #STEP 3: create common substitutions of numbers for letters and apply these combos to the list of mixed word case combos
-    savelist.append((mem_mixer,mem_caps,mem_numsub,allcomb(mem_numbers,mem_mixer,mem_caps,mem_numsub)))
+    savelist.append(list(allcomb(mem_numbers,mem_mixer,mem_numsub)))
     with open("pass.txt","w+") as file:
         for line in savelist:
             file.write(savelist[line])
