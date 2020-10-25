@@ -83,13 +83,11 @@ def allcomb(in_numbers,in_words,numsub):
     comb.append(in_words)
     for i in range(0,len(in_words)):
         for f in range(0,len(in_numbers)):
-            print(in_words[i])
-            print(in_numbers[f])
             comb.append(in_words[i]+in_numbers[f])
             comb.append(in_numbers[f]+in_words[i])
     comb.append(in_numbers)
     print(f"wow thats a long file: {len(comb)} guesses in total")
-    return comb
+    return list(collapse(comb))
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~the main function~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 def main():
@@ -111,10 +109,10 @@ def main():
     #currently out of the program  due to memory errors:
     mem_caps = 0#caps(mem_mixer) #STEP 2: Take that list of mixes and find all upper/lower case combos
     mem_numsub = numsub(mem_caps) #STEP 3: create common substitutions of numbers for letters and apply these combos to the list of mixed word case combos
-    savelist.append(list(allcomb(mem_numbers,mem_mixer,mem_numsub)))
+    savelist.append(allcomb(mem_numbers,mem_mixer,mem_numsub))
     with open("pass.txt","w+") as file:
-        for line in savelist:
-            file.write(savelist[line])
+        for line in savelist[0]:
+            file.write(line+"\n")
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~start~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 if __name__=="__main__":
