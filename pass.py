@@ -58,7 +58,6 @@ def mixer(in_words):
     #do just the usual mixing and mashing of the words, words with numbers, etc, these can then be transmuted via the others
     listw = []
     listc = []
-    listw.append(in_words)
     for f in range(1,(len(in_words)+1)):
         print("mixing words:",f,"/",len(in_words))
         listw.append(["".join(p) for p in permutations(in_words,f)])
